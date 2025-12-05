@@ -1,3 +1,8 @@
+package Bank;
+
+import Exceptions.DepositFundsException;
+import Exceptions.InsufficientFundsException;
+
 public abstract class Account {
 
     private String name;
@@ -44,44 +49,40 @@ public abstract class Account {
         this.name = name;
     }
 
-    public void deposit(double amount){
+    public void deposit(double amount) throws DepositFundsException {
 
-    if (amount > 0) {
-        setBalance(balance += amount);
+    if (amount < 0){
 
-        System.out.println('\n' + "***New Balance: " + getBalance() + "***");
-
-        System.out.println('\n' + "Money deposited successful!");
-
-    }else{
-
-        System.out.println("Invalid Amount. Enter correct amount!!!");
+        throw new DepositFundsException("Incorrect Amount. Amount must positive!!!");
 
     }
 
+    setBalance(balance += amount);
+
+    System.out.println("Amount deposited Successful | New balance: " + getBalance()) ;
+
     }
 
-    public void withdraw(double amount){
+    public void withdraw(double amount) throws InsufficientFundsException {
 
-     if(amount <= getBalance()){
+     if (amount > balance){
+
+         throw new InsufficientFundsException(" Balance: " + getBalance());
+
+     }
+
+     if (amount < 0 ){
+
+      throw new InsufficientFundsException("Amount must positive");
+
+     }
 
      setBalance(balance -= amount);
 
-         System.out.println('\n' + "***New balance: " + getBalance() + "***");
-
-         System.out.println('\n' + "Money deposited successful!");
-
-     } else{
-
-         System.out.println("Insufficient amount. Try again!!!");
-
-     }
+     System.out.println("Amount Withdrew Successful: " + amount + " | New balance: " + getBalance()) ;
 
     }
 
     public abstract void interestRate(double interestMoney);
-
-
-
 
 }

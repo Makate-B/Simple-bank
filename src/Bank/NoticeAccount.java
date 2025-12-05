@@ -1,3 +1,5 @@
+package Bank;
+
 public class NoticeAccount extends Account {
 
     private double accountInterestRate = 0.063;

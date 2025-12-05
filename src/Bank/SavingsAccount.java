@@ -1,3 +1,5 @@
+package Bank;
+
 public class SavingsAccount extends Account {
 
     private double accountInterestRate = 0.02;
