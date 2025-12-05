@@ -2,6 +2,7 @@ package Bank;
 
 import Exceptions.DepositFundsException;
 import Exceptions.InsufficientFundsException;
+import Exceptions.InvalidDataTypeException;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -26,7 +27,7 @@ public class Main {
 
             System.out.print('\n' + "Option: ");
             int option = input.nextInt();
-            input.nextLine(); // consume newline
+            input.nextLine();
 
             switch (option) {
 
@@ -38,8 +39,45 @@ public class Main {
                     System.out.print("Enter ID number: ");
                     String IDnumber = input.nextLine();
 
+                    try{
+
+                 if(!IDnumber.matches("\\d+")) {
+
+                     throw new InvalidDataTypeException("ID number must contain digits");
+
+                  }
+
+                 if (IDnumber.length() < 13){
+
+                     throw new InvalidDataTypeException("ID number must be 13 Digits");
+
+                 }
+
+
+                    }catch (InvalidDataTypeException e){
+
+                        System.out.println("Input error: " + e.getMessage());
+
+                        break;
+                    }
+
                     System.out.print("Create Bank Number: ");
                     String accountNumber1 = input.nextLine();
+
+                    try {
+
+                        if (!accountNumber1.matches("\\d+")){
+
+                            throw new InvalidDataTypeException("Account number must contain only digits");
+
+                        }
+
+                    }catch (InvalidDataTypeException e){
+
+                        System.out.println("Input error: " + e.getMessage());
+
+                        break;
+                    }
 
                     System.out.println('\n' + "Bank account created Successfully!");
                     System.out.println('\n' + "-----------------------------------");
@@ -52,11 +90,54 @@ public class Main {
                     System.out.print("Enter full names: ");
                     String fullNames2 = input.nextLine();
 
-                    System.out.print("Enter ID number: ");
-                    String IDnumber2 = input.nextLine();
+
+
+                        System.out.print("Enter ID number: ");
+                        String IDnumber2 = input.nextLine();
+
+                        try{
+
+                         if (!IDnumber2.matches("\\d+")){
+
+                             throw  new InvalidDataTypeException("ID must contain only numbers");
+
+                         }
+
+                         if (IDnumber2.length() < 13){
+
+                             throw new InvalidDataTypeException("ID number must be 13 digits");
+
+                         }
+
+
+                        }catch (InvalidDataTypeException e){
+
+                            System.out.println("Invalid input: " + e.getMessage());
+
+                            break;
+
+                        }
+
 
                     System.out.print("Create Bank Number: ");
                     String accountNumber2 = input.nextLine();
+
+                    try{
+
+                        if(!accountNumber2.matches("\\d+")){
+
+                         throw new InvalidDataTypeException("Account number must only contain digits");
+
+                        }
+
+
+                    }catch (InvalidDataTypeException e){
+
+                        System.out.println("Input error: " + e.getMessage());
+
+                        break;
+
+                    }
 
                     System.out.println('\n' + "Bank account created Successfully!");
                     System.out.println('\n' + "-----------------------------------");
@@ -70,25 +151,39 @@ public class Main {
                     String enteredAccountNo = input.nextLine();
 
                     boolean found = false;
-                    for (Account acc : accountDetails) {
-                        if (acc.getAccountNumber().equals(enteredAccountNo)) {
-                            System.out.print('\n' + "Enter the Amount: ");
-                            double depAmount = input.nextDouble();
 
-                            try {
-                                acc.deposit(depAmount);
-                            } catch (DepositFundsException e) {
-                                System.out.println("Deposit unsuccessful! " + e.getMessage());
-                            }
-                            System.out.println('\n' + "------------------------------");
-                            found = true;
-                            break;
+                    try {
+
+                        if (!enteredAccountNo.matches("\\d+")){
+
+                            throw new InvalidDataTypeException("Enter only digits");
+
                         }
+
+                        for (Account acc : accountDetails) {
+                            if (acc.getAccountNumber().equals(enteredAccountNo)) {
+                                System.out.print('\n' + "Enter the Amount: ");
+                                double depAmount = input.nextDouble();
+
+                                try {
+                                    acc.deposit(depAmount);
+                                } catch (DepositFundsException e) {
+                                    System.out.println("Deposit unsuccessful! " + e.getMessage());
+                                }
+                                System.out.println('\n' + "------------------------------");
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            System.out.println("account number not found.");
+                        }
+                    }catch(InvalidDataTypeException e){
+
+                        System.out.println("Invalid input: " + e.getMessage());
+
                     }
-                    if (!found) {
-                        System.out.println("Incorrect account number. Please try again");
-                    }
-                    break; // ✅ added
+
 
                 case 4:
                     System.out.println('\n' + "----------WITHDRAW----------" + '\n');
@@ -96,22 +191,37 @@ public class Main {
                     String enteredAccountNumber2 = input.nextLine();
 
                     boolean found2 = false;
-                    for (Account acc2 : accountDetails) {
-                        if (acc2.getAccountNumber().equals(enteredAccountNumber2)) {
-                            System.out.print("Enter Amount: ");
-                            double witAmount = input.nextDouble();
 
-                            try {
-                                acc2.withdraw(witAmount);
-                            } catch (InsufficientFundsException e) {
-                                System.out.println("Withdrawal Unsuccessful. " + e.getMessage());
-                            }
-                            found2 = true;
-                            break;
+                    try {
+
+                        if (!enteredAccountNumber2.matches("\\d+")){
+
+                            throw new InvalidDataTypeException("Enter only Digits");
+
                         }
-                    }
-                    if (!found2) {
-                        System.out.println("No account found");
+
+                        for (Account acc2 : accountDetails) {
+                            if (acc2.getAccountNumber().equals(enteredAccountNumber2)) {
+                                System.out.print("Enter Amount: ");
+                                double witAmount = input.nextDouble();
+
+                                try {
+                                    acc2.withdraw(witAmount);
+                                } catch (InsufficientFundsException e) {
+                                    System.out.println("Withdrawal Unsuccessful. " + e.getMessage());
+                                }
+                                found2 = true;
+                                break;
+                            }
+                        }
+                        if (!found2) {
+                            System.out.println("No account found");
+                        }
+
+                    } catch (InvalidDataTypeException e) {
+
+                        System.out.println("Input error: " + e.getMessage());
+
                     }
                     break;
 
@@ -121,48 +231,59 @@ public class Main {
                     String enteredAccountNumber3 = input.nextLine();
 
                     boolean found3 = false;
-                    for (Account acc3 : accountDetails) {
-                        if (acc3.getAccountNumber().equals(enteredAccountNumber3)) {
-                            System.out.println("Balance: " + acc3.getBalance());
-                            found3 = true;
-                            break;
+
+                    try {
+
+                        if (!enteredAccountNumber3.matches("\\d+")){
+
+                            throw new InvalidDataTypeException("Enter only digits");
+
                         }
-                    }
-                    if (!found3) {
-                        System.out.println("Wrong account number!!!");
+
+                        for (Account acc3 : accountDetails) {
+                            if (acc3.getAccountNumber().equals(enteredAccountNumber3)) {
+                                System.out.println("Balance: " + acc3.getBalance());
+                                found3 = true;
+                                break;
+                            }
+                        }
+                        if (!found3) {
+                            System.out.println("Account not Found!!!");
+                        }
+                    }catch (InvalidDataTypeException e){
+
+                        System.out.println("Invalid input: " + e.getMessage());
+
                     }
                     break;
 
                 case 6:
-
                     System.out.println('\n' + "----------INTEREST RATE----------" + '\n');
-
-                    System.out.print("Enter Account Number:");
-
-                    String enteredAccount4 = input.next();
+                    System.out.print("Enter Account Number: ");
+                    String enteredAccount4 = input.nextLine();
 
                     boolean found5 = false;
 
-                    for(Account acc : accountDetails){
+                    try {
+                        if (!enteredAccount4.matches("\\d+")) {
+                            throw new InvalidDataTypeException("Account number must contain digits only!");
+                        }
 
-                    if(acc.getAccountNumber().equals(enteredAccount4)){
+                        for (Account acc : accountDetails) {
+                            if (acc.getAccountNumber().equals(enteredAccount4)) {
+                                acc.interestRate();
+                                found5 = true;
+                                break;
+                            }
+                        }
 
-                    acc.interestRate();
+                        if (!found5) {
+                            System.out.println("No account found with that number.");
+                        }
 
-                    found5 = true;
-
-                    break;
-
+                    } catch (InvalidDataTypeException e) {
+                        System.out.println("Input Error: " + e.getMessage());
                     }
-
-                    }
-
-                    if(!found5){
-
-                        System.out.println("Account not found");
-
-                    }
-
                     break;
 
                 case 7:
