@@ -160,7 +160,7 @@ public class Main {
 
                 case 6:
 
-                    System.out.println("Existing...");
+                    System.out.println("Existing. Goodbye...");
 
                     System.exit(0);
 
