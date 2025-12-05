@@ -21,7 +21,8 @@ public class Main {
                     "3. Deposit" + '\n' +
                     "4. Withdrawal" + '\n' +
                     "5. Check Balance" + '\n' +
-                    "6. Exit");
+                    "6. Check Interest Rate" + '\n' +
+                    "7. Exit");
 
             System.out.print('\n' + "Option: ");
             int option = input.nextInt();
@@ -133,6 +134,39 @@ public class Main {
                     break;
 
                 case 6:
+
+                    System.out.println('\n' + "----------INTEREST RATE----------" + '\n');
+
+                    System.out.print("Enter Account Number:");
+
+                    String enteredAccount4 = input.next();
+
+                    boolean found5 = false;
+
+                    for(Account acc : accountDetails){
+
+                    if(acc.getAccountNumber().equals(enteredAccount4)){
+
+                    acc.interestRate();
+
+                    found5 = true;
+
+                    break;
+
+                    }
+
+                    }
+
+                    if(!found5){
+
+                        System.out.println("Account not found");
+
+                    }
+
+                    break;
+
+                case 7:
+
                     System.out.println("Exiting. Goodbye...");
                     System.exit(0);
                     break;

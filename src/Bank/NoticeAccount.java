@@ -9,13 +9,13 @@ public class NoticeAccount extends Account {
     }
 
     @Override
-    public void interestRate(double interestMoney) {
+    public void interestRate() {
 
-    interestMoney = getBalance() * accountInterestRate;
+    double interestMoney = getBalance() * accountInterestRate;
 
-    setBalance(getBalance() + interestMoney);
+    System.out.println("Account Balance: " + getBalance());
 
-    System.out.println("Interest Added: " + interestMoney);
+    System.out.println("Interest will earn monthly: " + interestMoney);
 
     }
 }
